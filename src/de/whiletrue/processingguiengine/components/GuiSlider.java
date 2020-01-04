@@ -25,11 +25,7 @@ public class GuiSlider extends GuiComponent{
 	//The current display value
 	private String text;
 	
-	public GuiSlider(int x,int y,int width,int height,int minValue,int maxValue,int currentValue, ChangeListener onchange,String defaultText) {
-		this(x,y,width,height,minValue,maxValue,currentValue,onchange,defaultText,0xf00000,0x717171,0);
-	}
-	
-	public GuiSlider(int x,int y,int width,int height,int minValue,int maxValue,int currentValue, ChangeListener onchange,String defaultText,int fillColor,int emptyColor,int outlineColor) {
+	public GuiSlider(int x,int y,int width,int height,int minValue,int maxValue,int currentValue,ChangeListener onchange,String defaultText) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -39,9 +35,9 @@ public class GuiSlider extends GuiComponent{
 		this.onchange = onchange;
 		this.text = defaultText;
 		this.setState(currentValue);
-		this.filledColor = new Color(fillColor).getRGB();
-		this.emptyColor = new Color(emptyColor).getRGB();
-		this.outlineColor = new Color(outlineColor).getRGB();
+		this.filledColor = new Color(0xf00000).getRGB();
+		this.emptyColor = new Color(0x717171).getRGB();
+		this.outlineColor = new Color(0).getRGB();
 	}
 	
 	@Override
@@ -150,7 +146,7 @@ public class GuiSlider extends GuiComponent{
 		//Calculates the percentual value of the slider
 		this.percState = ((double)(currentValue-this.min))/((double)(this.max-this.min));
 	}	
-	
+
 	//Listener that executes everytime the sliders value changes
 	@FunctionalInterface
 	public interface ChangeListener{
@@ -159,8 +155,7 @@ public class GuiSlider extends GuiComponent{
 		 * @param value The current exact value of the slider
 		 * */
 		public String execute(double percentualState,int value);
-	}
-	
+	}	
 	
 
 	//Return the x
@@ -292,6 +287,12 @@ public class GuiSlider extends GuiComponent{
 	//Sets text
 	public GuiSlider setText(String text) {
 		this.text = text;
+		return this;
+	}
+	
+	//Sets the change listener
+	public GuiSlider setChangeListener(ChangeListener onchange){
+		this.onchange=onchange;
 		return this;
 	}
 }
