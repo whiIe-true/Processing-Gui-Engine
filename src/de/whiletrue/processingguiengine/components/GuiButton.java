@@ -11,24 +11,36 @@ import processing.core.PApplet;
 
 public class GuiButton extends GuiComponent{
 
+	//Position
 	private int x,y,width,height,
-	defaultColor,hoverColor,clickColor;
+	//Styles
+	defaultColor,hoverColor,clickColor,textColor,textShadowColor,outlineColor,outlineStrength;
+	private boolean shadow;
+	//Events
 	private Function<Integer, String> onclick;
+	//Text on the button
 	private String text;
 	
 	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick) {
-		this(x,y,width,height,onclick,0x717171,0xA00000,0x0F50000);
+		this(x,y,width,height,onclick,0xff717171,0xffA00000,0xffF50000,0xffFFFFFF,0xffACACAC,0,4);
 	}
 	
-	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick,int defaultBackground,int hoverColor,int clickColor) {
+	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick,
+			int defaultBackground,int hoverColor,int clickColor,int textColor,int textShadowColor,int outlineColor,int outlineStrength) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.onclick = onclick;
-		this.defaultColor = new Color(defaultBackground).getRGB();
-		this.hoverColor = new Color(hoverColor).getRGB();
-		this.clickColor = new Color(clickColor).getRGB();
+		
+		this.defaultColor = defaultBackground;
+		this.hoverColor = hoverColor;
+		this.clickColor = clickColor;
+		this.textColor=textColor;
+		this.textShadowColor=textShadowColor;
+		this.shadow=textShadowColor!=-1;
+		this.outlineColor=outlineColor;
+		this.outlineStrength=outlineStrength;
 		this.text = onclick.apply(-1);
 	}
 	
@@ -70,14 +82,21 @@ public class GuiButton extends GuiComponent{
 		return new AbstractMap.SimpleEntry<Boolean,RenderObject>(hover, ()->{
 			
 			//Renders the button
+			app.stroke(this.outlineColor);
+			app.strokeWeight(this.outlineStrength);
 			app.fill(new Color(col).getRGB());
 			app.rect(this.x, this.y, this.width, this.height);
 			
 			//Renders the text
-			app.fill(255);
 			app.textSize(Math.min(this.width, this.height)/2);
 			app.textAlign(PApplet.CENTER,PApplet.CENTER);
-			app.text(this.text, this.x+this.width/2, this.y+this.height/2);
+			//Checks if the text should be rendered as a shadow
+			if(this.shadow) {
+				app.fill(this.textShadowColor);
+				app.text(this.text, this.x+this.width/2-2, this.y+this.height/2.5f+2);
+			}
+			app.fill(this.textColor);
+			app.text(this.text, this.x+this.width/2, this.y+this.height/2.5f);
 		});
 	}
 
@@ -179,6 +198,61 @@ public class GuiButton extends GuiComponent{
 	//Sets text
 	public GuiButton setText(String text) {
 		this.text = text;
+		return this;
+	}
+
+	//Return the textColor
+	public final int getTextColor(){
+		return this.textColor;
+	}
+
+	//Return the textShadowColor
+	public final int getTextShadowColor(){
+		return this.textShadowColor;
+	}
+
+	//Return the outlineColor
+	public final int getOutlineColor(){
+		return this.outlineColor;
+	}
+
+	//Return the outlineStrength
+	public final int getOutlineStrength(){
+		return this.outlineStrength;
+	}
+
+	//Return the shadow
+	public final boolean isShadow(){
+		return this.shadow;
+	}
+
+	//Sets textColor
+	public final GuiButton setTextColor(int textColor){
+		this.textColor=textColor;
+		return this;
+	}
+
+	//Sets textShadowColor
+	public final GuiButton setTextShadowColor(int textShadowColor){
+		this.textShadowColor=textShadowColor;
+		return this;
+	}
+
+	//Sets outlineColor
+	public final GuiButton setOutlineColor(int outlineColor){
+		this.outlineColor=outlineColor;
+		return this;
+	}
+
+	//Sets outlineStrength
+	public final GuiButton setOutlineStrength(int outlineStrength){
+		this.outlineStrength=outlineStrength;
+		return this;
+	}
+
+	//Sets shadow
+	public final GuiButton setShadow(boolean shadow){
+		this.shadow=shadow;
 		return this;
 	}
 }

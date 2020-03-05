@@ -1,6 +1,5 @@
 package de.whiletrue.processingguiengine.components;
 
-import java.awt.Color;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
@@ -35,9 +34,9 @@ public class GuiSlider extends GuiComponent{
 		this.onchange = onchange;
 		this.text = defaultText;
 		this.setState(currentValue);
-		this.filledColor = new Color(0xf00000).getRGB();
-		this.emptyColor = new Color(0x717171).getRGB();
-		this.outlineColor = new Color(0).getRGB();
+		this.filledColor = 0xfff00000;
+		this.emptyColor = 0xff717171;
+		this.outlineColor = 0;
 	}
 	
 	@Override

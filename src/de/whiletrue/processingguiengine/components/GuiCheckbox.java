@@ -1,6 +1,5 @@
 package de.whiletrue.processingguiengine.components;
 
-import java.awt.Color;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
@@ -20,7 +19,7 @@ public class GuiCheckbox extends GuiComponent{
 	private CheckboxListener onchange;
 
 	public GuiCheckbox(int x,int y,int width,int height,boolean checked,CheckboxListener onchange){
-		this(x,y,width,height,checked,onchange,0,0xff0000);
+		this(x,y,width,height,checked,onchange,0,0xffff0000);
 	}
 
 	public GuiCheckbox(int x,int y,int width,int height,boolean checked,CheckboxListener onchange,int outlineColor,int fillColor){
@@ -30,8 +29,8 @@ public class GuiCheckbox extends GuiComponent{
 		this.height=height;
 		this.checked=checked;
 		this.onchange=onchange;
-		this.outlineColor=new Color(outlineColor).getRGB();
-		this.fillColor=new Color(fillColor).getRGB();
+		this.outlineColor=outlineColor;
+		this.fillColor=fillColor;
 	}
 
 	@Override

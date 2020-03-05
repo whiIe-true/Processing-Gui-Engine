@@ -29,7 +29,7 @@ public class GuiTextfield extends GuiComponent{
 	private int textColor,fillColor,outlineColor,presetColor;
 	
 	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String defaultText) {
-		this(x,y,width,height,ontype,defaultText,null,0xffffff,0,0xffffff,0x4A63D4);
+		this(x,y,width,height,ontype,defaultText,null,0xffffffff,0,0xffffffff,0xff4A63D4);
 	}
 	
 	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String defaultText,String presetText,int textColor,int fillColor,int outlineColor,int presetColor) {
@@ -39,10 +39,10 @@ public class GuiTextfield extends GuiComponent{
 		this.height = height;
 		this.ontype = ontype;
 		this.text = new StringBuffer(defaultText==null?"":defaultText);
-		this.textColor = new Color(textColor).getRGB();
-		this.fillColor = new Color(fillColor).getRGB();
-		this.outlineColor = new Color(outlineColor).getRGB();
-		this.presetColor = new Color(presetColor).getRGB();
+		this.textColor = textColor;
+		this.fillColor = fillColor;
+		this.outlineColor = outlineColor;
+		this.presetColor = presetColor;
 		this.presetText = presetText==null?"":presetText;
 	}
 	
