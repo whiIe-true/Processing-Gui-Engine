@@ -14,7 +14,8 @@ public class GuiButton extends GuiComponent{
 	//Position
 	private int x,y,width,height,
 	//Styles
-	defaultColor,hoverColor,clickColor,textColor,textShadowColor,outlineColor,outlineStrength;
+	defaultColor,hoverColor,clickColor,textColor,textShadowColor,outlineColor,outlineStrength,
+	cornerStrength;
 	private boolean shadow;
 	//Events
 	private Function<Integer, String> onclick;
@@ -22,17 +23,19 @@ public class GuiButton extends GuiComponent{
 	private String text;
 	
 	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick) {
-		this(x,y,width,height,onclick,0xff717171,0xffA00000,0xffF50000,0xffFFFFFF,0xffACACAC,0,4);
+		this(x,y,width,height,onclick,0xff717171,0xffA00000,0xffF50000,0xffFFFFFF,0xffACACAC,0,4,0);
 	}
 	
 	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick,
-			int defaultBackground,int hoverColor,int clickColor,int textColor,int textShadowColor,int outlineColor,int outlineStrength) {
+			int defaultBackground,int hoverColor,int clickColor,int textColor,int textShadowColor,
+			int outlineColor,int outlineStrength,int cornerStrength) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.onclick = onclick;
 		
+		this.cornerStrength=cornerStrength;
 		this.defaultColor = defaultBackground;
 		this.hoverColor = hoverColor;
 		this.clickColor = clickColor;
@@ -85,7 +88,7 @@ public class GuiButton extends GuiComponent{
 			app.stroke(this.outlineColor);
 			app.strokeWeight(this.outlineStrength);
 			app.fill(new Color(col).getRGB());
-			app.rect(this.x, this.y, this.width, this.height);
+			app.rect(this.x, this.y, this.width, this.height,this.cornerStrength);
 			
 			//Renders the text
 			app.textSize(Math.min(this.width, this.height)/2);

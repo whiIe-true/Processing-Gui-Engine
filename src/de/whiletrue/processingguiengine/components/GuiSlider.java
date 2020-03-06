@@ -13,8 +13,8 @@ public class GuiSlider extends GuiComponent{
 	private int x,y,width,height;
 	//Min an max values of the slider
 	private int min,max;
-	//Color of the slider
-	private int filledColor,emptyColor,outlineColor;
+	//Styles
+	private int filledColor,emptyColor,outlineColor,textColor,outlineStrength;
 	//Percentual value of the slider
 	private double percState = 0;
 	//Sets if the slider is dragged
@@ -25,6 +25,11 @@ public class GuiSlider extends GuiComponent{
 	private String text;
 	
 	public GuiSlider(int x,int y,int width,int height,int minValue,int maxValue,int currentValue,ChangeListener onchange,String defaultText) {
+		this(x,y,width,height,minValue,maxValue,currentValue,onchange,defaultText,0xfff00000,0xff717171,0,255,5);
+	}
+	
+	public GuiSlider(int x,int y,int width,int height,int minValue,int maxValue,int currentValue,ChangeListener onchange,String defaultText,
+			int filledColor,int emptyColor,int outlineColor,int textColor,int outlineStrength) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -34,9 +39,11 @@ public class GuiSlider extends GuiComponent{
 		this.onchange = onchange;
 		this.text = defaultText;
 		this.setState(currentValue);
-		this.filledColor = 0xfff00000;
-		this.emptyColor = 0xff717171;
-		this.outlineColor = 0;
+		this.filledColor=filledColor;
+		this.emptyColor=emptyColor;
+		this.outlineColor=outlineColor;
+		this.textColor=textColor;
+		this.outlineStrength=outlineStrength;
 	}
 	
 	@Override
@@ -102,7 +109,7 @@ public class GuiSlider extends GuiComponent{
 			//Renders the outline
 			app.noFill();
 			app.stroke(this.outlineColor);
-			app.strokeWeight(5);
+			app.strokeWeight(this.outlineStrength);
 			app.rect(this.x-1, this.y-1, this.width+1, this.height+1);
 			
 			//Renders the slider
@@ -113,7 +120,7 @@ public class GuiSlider extends GuiComponent{
 			app.rect(this.x+wid, this.y, this.width-wid, this.height);
 			
 			//Renders the slider text
-			app.fill(255);
+			app.fill(this.textColor);
 			app.textAlign(PApplet.CENTER,PApplet.CENTER);
 			app.textSize(Math.min(this.width, this.height)/2);
 			app.text(this.text,this.x+this.width/2, this.y+this.height/2);
@@ -268,6 +275,28 @@ public class GuiSlider extends GuiComponent{
 	//Sets outlineColor
 	public GuiSlider setOutlineColor(int outlineColor) {
 		this.outlineColor = outlineColor;
+		return this;
+	}
+
+	//Return the textColor
+	public final int getTextColor(){
+		return this.textColor;
+	}
+
+	//Return the outlineStrength
+	public final int getOutlineStrength(){
+		return this.outlineStrength;
+	}
+
+	//Sets textColor
+	public final GuiSlider setTextColor(int textColor){
+		this.textColor=textColor;
+		return this;
+	}
+
+	//Sets outlineStrength
+	public final GuiSlider setOutlineStrength(int outlineStrength){
+		this.outlineStrength=outlineStrength;
 		return this;
 	}
 

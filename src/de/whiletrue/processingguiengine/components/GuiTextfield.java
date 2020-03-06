@@ -25,14 +25,15 @@ public class GuiTextfield extends GuiComponent{
 	private String presetText;
 	//Defines where the curser is a the text
 	private int curser = 0;
-	//Colors
-	private int textColor,fillColor,outlineColor,presetColor;
+	//Styles
+	private int textColor,fillColor,outlineColor,presetColor,outlineStrength;
 	
 	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String defaultText) {
-		this(x,y,width,height,ontype,defaultText,null,0xffffffff,0,0xffffffff,0xff4A63D4);
+		this(x,y,width,height,ontype,defaultText,null,0xffffffff,0,0xffffffff,0xff4A63D4,3);
 	}
 	
-	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String defaultText,String presetText,int textColor,int fillColor,int outlineColor,int presetColor) {
+	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String defaultText,String presetText,
+			int textColor,int fillColor,int outlineColor,int presetColor,int outlineStrength) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -44,6 +45,7 @@ public class GuiTextfield extends GuiComponent{
 		this.outlineColor = outlineColor;
 		this.presetColor = presetColor;
 		this.presetText = presetText==null?"":presetText;
+		this.outlineStrength=outlineStrength;
 	}
 	
 	@Override
@@ -182,7 +184,7 @@ public class GuiTextfield extends GuiComponent{
 			//Renders the box
 			app.stroke(this.outlineColor);
 			app.fill(this.fillColor);
-			app.strokeWeight(3);
+			app.strokeWeight(this.outlineStrength);
 			app.rect(this.x, this.y, this.width, this.height);
 			
 			//Renders the text
@@ -299,6 +301,32 @@ public class GuiTextfield extends GuiComponent{
 	//Sets the height
 	public GuiTextfield setHeight(int height) {
 		this.height = height;
+		return this;
+	}
+
+	//Return the textColor
+	public final int getTextColor(){
+		return this.textColor;
+	}
+
+	//Return the fillColor
+	public final int getFillColor(){
+		return this.fillColor;
+	}
+
+	//Return the outlineColor
+	public final int getOutlineColor(){
+		return this.outlineColor;
+	}
+
+	//Return the outlineStrength
+	public final int getOutlineStrength(){
+		return this.outlineStrength;
+	}
+
+	//Sets outlineStrength
+	public final GuiTextfield setOutlineStrength(int outlineStrength){
+		this.outlineStrength=outlineStrength;
 		return this;
 	}
 }
