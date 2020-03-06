@@ -17,7 +17,6 @@ public class GuiImageButton extends GuiComponent{
 	private int x,y,width,height,
 	//Styles
 	textColor,textShadowColor,hoverOffsetX,hoverOffsetY;
-	private boolean shadow;
 	//Events
 	private Function<Integer, String> onclick;
 	//Text on the button
@@ -37,7 +36,6 @@ public class GuiImageButton extends GuiComponent{
 		this.onclick = onclick;
 		this.textColor=textColor;
 		this.textShadowColor=textShadowColor;
-		this.shadow=textShadowColor!=-1;
 		this.hoverOffsetX=hoverOffsetX;
 		this.hoverOffsetY=hoverOffsetY;
 		this.text = onclick.apply(-1);
@@ -92,7 +90,7 @@ public class GuiImageButton extends GuiComponent{
 				app.textSize(this.width*.3f);
 				app.textAlign(PApplet.CENTER,PApplet.TOP);
 				//Checks if the text should be rendered as a shadow
-				if(this.shadow) {
+				if(this.textShadowColor!=-1) {
 					app.fill(this.textShadowColor);
 					app.text(this.text, this.x+this.width/2-2, this.y+this.height+4);
 				}
@@ -110,6 +108,94 @@ public class GuiImageButton extends GuiComponent{
 				mouseX < this.x+this.width &&
 				mouseY > this.y &&
 				mouseY < this.y+this.height;
+	}
+
+	//Return the x
+	public final int getX(){
+		return this.x;
+	}
+
+	//Return the y
+	public final int getY(){
+		return this.y;
+	}
+
+	//Return the width
+	public final int getWidth(){
+		return this.width;
+	}
+
+	//Return the textColor
+	public final int getTextColor(){
+		return this.textColor;
+	}
+
+	//Return the textShadowColor
+	public final int getTextShadowColor(){
+		return this.textShadowColor;
+	}
+
+	//Return the hoverOffsetX
+	public final int getHoverOffsetX(){
+		return this.hoverOffsetX;
+	}
+
+	//Return the hoverOffsetY
+	public final int getHoverOffsetY(){
+		return this.hoverOffsetY;
+	}
+
+	//Return the text
+	public final String getText(){
+		return this.text;
+	}
+
+	//Sets x
+	public final GuiImageButton setX(int x){
+		this.x=x;
+		return this;
+	}
+
+	//Sets y
+	public final GuiImageButton setY(int y){
+		this.y=y;
+		return this;
+	}
+
+	//Sets width
+	public final GuiImageButton setWidth(int width){
+		this.width=width;
+		return this;
+	}
+
+	//Sets textColor
+	public final GuiImageButton setTextColor(int textColor){
+		this.textColor=textColor;
+		return this;
+	}
+
+	//Sets textShadowColor
+	public final GuiImageButton setTextShadowColor(int textShadowColor){
+		this.textShadowColor=textShadowColor;
+		return this;
+	}
+
+	//Sets hoverOffsetX
+	public final GuiImageButton setHoverOffsetX(int hoverOffsetX){
+		this.hoverOffsetX=hoverOffsetX;
+		return this;
+	}
+
+	//Sets hoverOffsetY
+	public final GuiImageButton setHoverOffsetY(int hoverOffsetY){
+		this.hoverOffsetY=hoverOffsetY;
+		return this;
+	}
+
+	//Sets text
+	public final GuiImageButton setText(String text){
+		this.text=text;
+		return this;
 	}
 	
 }

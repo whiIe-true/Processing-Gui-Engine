@@ -10,6 +10,11 @@ import processing.core.PApplet;
 
 public class GuiTextfield extends GuiComponent{
 
+	//Default style for the class
+	private static String defaultPreset;
+	private static int defaultTextColor=0xffFFFFFF,defaultFillColor=0x0,defaultOutlineColor=0xffFFFFFF,
+			defaultPresetColor=0xff4A63D4,defaultOutlineStrength=0x3,defaultCornerStrength=0x0;
+
 	//Position of the field
 	private int x,y,width,height;
 	//Typelistener
@@ -28,17 +33,18 @@ public class GuiTextfield extends GuiComponent{
 	//Styles
 	private int textColor,fillColor,outlineColor,presetColor,outlineStrength,cornerStrength;
 
-	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String defaultText){
-		this(x,y,width,height,ontype,defaultText,null,0xffffffff,0,0xffffffff,0xff4A63D4,3,0);
+	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String text){
+		this(x,y,width,height,ontype,text,defaultPreset,defaultTextColor,defaultFillColor,defaultOutlineColor,
+				defaultPresetColor,defaultOutlineStrength,defaultCornerStrength);
 	}
 
-	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String defaultText,String presetText,int textColor,int fillColor,int outlineColor,int presetColor,int outlineStrength,int cornerStrength){
+	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String text,String presetText,int textColor,int fillColor,int outlineColor,int presetColor,int outlineStrength,int cornerStrength){
 		this.x=x;
 		this.y=y;
 		this.width=width;
 		this.height=height;
 		this.ontype=ontype;
-		this.text=new StringBuffer(defaultText == null?"":defaultText);
+		this.text=new StringBuffer(text == null?"":text);
 		this.textColor=textColor;
 		this.fillColor=fillColor;
 		this.outlineColor=outlineColor;
@@ -46,6 +52,19 @@ public class GuiTextfield extends GuiComponent{
 		this.presetColor=presetColor;
 		this.presetText=presetText == null?"":presetText;
 		this.outlineStrength=outlineStrength;
+	}
+
+	/*
+	 * Sets the default style values for every new class instance
+	 */
+	public static void setDefaults(String presetText,int textColor,int fillColor,int outlineColor,int presetColor,
+			int outlineStrength,int cornerStrength){
+		defaultTextColor=textColor;
+		defaultFillColor=fillColor;
+		defaultOutlineColor=outlineColor;
+		defaultPresetColor=presetColor;
+		defaultOutlineStrength=outlineStrength;
+		defaultCornerStrength=cornerStrength;
 	}
 
 	@Override
