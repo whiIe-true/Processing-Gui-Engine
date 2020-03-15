@@ -68,6 +68,11 @@ public class GuiTextfield extends GuiComponent{
 	}
 
 	@Override
+	public void handleAfterMousePressed(PApplet app){
+		this.focused=false;
+	}
+	
+	@Override
 	public boolean handleMousePressed(PApplet app){
 		//Gets if the field is hovered
 		boolean hovered=this.isHovered(app.mouseX,app.mouseY);

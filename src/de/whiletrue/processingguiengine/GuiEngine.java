@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicReference;
 
 import processing.core.PApplet;
 
@@ -54,13 +55,24 @@ public class GuiEngine {
 	 * Should be called whenever the mouse gets pressed
 	 * */
 	public void mousePressed() {
+		//Component on that the event got used
+		AtomicReference<GuiComponent>comp=new AtomicReference<>();
+		
 		//Iterates over all components
 		for(int i = this.loadedComponents.size()-1; i >= 0; i--) {
 			//Executes the event and checks if if used the mouse
-			if(this.loadedComponents.get(i).handleMousePressed(this.app))
+			if(this.loadedComponents.get(i).handleMousePressed(this.app)) {
+				//Sets the component
+				comp.set(this.loadedComponents.get(i));
 				//Exits the loop
 				break;
+			}
 		}
+		
+		//Executes the after events on all components
+		this.loadedComponents.stream()
+		.filter(i->i!=comp.get())
+		.forEach(i->i.handleAfterMousePressed(this.app));
 	}
 	
 	/*

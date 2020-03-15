@@ -54,6 +54,9 @@ public class GuiImageButton extends GuiComponent{
 	}
 
 	@Override
+	public void handleAfterMousePressed(PApplet app){}
+	
+	@Override
 	public boolean handleMouseReleased(PApplet app) {
 		return false;
 	}

@@ -58,6 +58,9 @@ public class GuiSlider extends GuiComponent{
 		this.dragged = false;
 		return false;
 	}
+	
+	@Override
+	public void handleAfterMousePressed(PApplet app){}
 
 	@Override
 	public boolean handleKeyPressed(PApplet app) {

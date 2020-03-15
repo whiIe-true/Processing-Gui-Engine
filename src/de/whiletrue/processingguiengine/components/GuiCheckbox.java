@@ -50,6 +50,9 @@ public class GuiCheckbox extends GuiComponent{
 	}
 
 	@Override
+	public void handleAfterMousePressed(PApplet app){}
+	
+	@Override
 	public boolean handleMouseReleased(PApplet app){
 		return false;
 	}

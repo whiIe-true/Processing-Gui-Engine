@@ -14,12 +14,17 @@ public class GuiButton extends GuiComponent{
 	//Default values for the class
 	private static int defaultBgColor=0xff717171,defaultHoverColor=0xffA00000,defaultClickColor=0xffF50000,
 			defaultTextColor=0xffFFFFFF,defaultTextShadowColor=0xffACACAC,defaultOutlineColor=0x0,
-			defaultOutlineStrength=0x4,defaultCornerStrength=0x0;
+			defaultCornerStrength=0x0;
+	private static float defaultSize=1f,defaultOutlineStrength=0x4;
 
 	//Position
 	private int x,y,width,height,
 			//Styles
-			defaultColor,hoverColor,clickColor,textColor,textShadowColor,outlineColor,outlineStrength,cornerStrength;
+			defaultColor,hoverColor,clickColor,textColor,textShadowColor,outlineColor,cornerStrength;
+	//Scale of the button
+	private float size=defaultSize,
+			//Style
+			outlineStrength;
 	//Events
 	private Function<Integer,String> onclick;
 	//Text on the button
@@ -30,7 +35,7 @@ public class GuiButton extends GuiComponent{
 				defaultTextShadowColor,defaultOutlineColor,defaultOutlineStrength,defaultCornerStrength);
 	}
 
-	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick,int background,int hoverColor,int clickColor,int textColor,int textShadowColor,int outlineColor,int outlineStrength,int cornerStrength){
+	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick,int background,int hoverColor,int clickColor,int textColor,int textShadowColor,int outlineColor,float outlineStrength,int cornerStrength){
 		this.x=x;
 		this.y=y;
 		this.width=width;
@@ -73,6 +78,9 @@ public class GuiButton extends GuiComponent{
 
 		return false;
 	}
+	
+	@Override
+	public void handleAfterMousePressed(PApplet app){}
 
 	@Override
 	public boolean handleMouseReleased(PApplet app){
@@ -99,22 +107,25 @@ public class GuiButton extends GuiComponent{
 		//Returns a new entry with the new used boolean and the render object
 		return new AbstractMap.SimpleEntry<Boolean,RenderObject>(hover,()->{
 
+			//Calculates the real coords
+			int[] coords = this.getRealCoordinates();
+			
 			//Renders the button
 			app.stroke(this.outlineColor);
 			app.strokeWeight(this.outlineStrength);
 			app.fill(new Color(col).getRGB());
-			app.rect(this.x,this.y,this.width,this.height,this.cornerStrength);
+			app.rect(coords[0],coords[1],coords[2],coords[3],this.cornerStrength);
 
 			//Renders the text
-			app.textSize(Math.min(this.width,this.height) / 2);
+			app.textSize(Math.max(.01f,Math.min(coords[2],coords[3])) / 2);
 			app.textAlign(PApplet.CENTER,PApplet.CENTER);
 			//Checks if the text should be rendered as a shadow
 			if(this.textShadowColor!=-1){
 				app.fill(this.textShadowColor);
-				app.text(this.text,this.x + this.width / 2 - 2,this.y + this.height / 2.5f + 2);
+				app.text(this.text,coords[0] + coords[2]/ 2 - 2,coords[1] + coords[3] / 2.5f + 2);
 			}
 			app.fill(this.textColor);
-			app.text(this.text,this.x + this.width / 2,this.y + this.height / 2.5f);
+			app.text(this.text,coords[0] + coords[2]/ 2,coords[1] + coords[3] / 2.5f);
 		});
 	}
 
@@ -122,7 +133,23 @@ public class GuiButton extends GuiComponent{
 	 * Returns if the button gets hovered
 	 */
 	private boolean isHovered(int mouseX,int mouseY){
-		return mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height;
+		//Gets the real coordinates
+		int[] coords = this.getRealCoordinates();
+		
+		//Returns if the mouse is inside the field
+		return mouseX > coords[0] && mouseX < coords[0] + coords[2] && mouseY > coords[1] && mouseY < coords[1] + coords[3];
+	}
+	
+	/*
+	 * Returns the real coordinates depending on the size
+	 * */
+	private int[] getRealCoordinates() {
+		return new int[] {
+			(int)(this.x+this.width/2-this.width/2*this.size),
+			(int)(this.y+this.height/2-this.height/2*this.size),
+			(int)(this.width*this.size),
+			(int)(this.height*this.size)
+		};
 	}
 
 	//Return the x
@@ -229,7 +256,7 @@ public class GuiButton extends GuiComponent{
 	}
 
 	//Return the outlineStrength
-	public final int getOutlineStrength(){
+	public final float getOutlineStrength(){
 		return this.outlineStrength;
 	}
 
@@ -252,8 +279,19 @@ public class GuiButton extends GuiComponent{
 	}
 
 	//Sets outlineStrength
-	public final GuiButton setOutlineStrength(int outlineStrength){
+	public final GuiButton setOutlineStrength(float outlineStrength){
 		this.outlineStrength=outlineStrength;
+		return this;
+	}
+
+	//Return the size
+	public final float getSize(){
+		return this.size;
+	}
+
+	//Sets size
+	public final GuiButton setSize(float size){
+		this.size=size;
 		return this;
 	}
 }
