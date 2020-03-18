@@ -9,20 +9,23 @@ import processing.core.PApplet;
 
 public class GuiCheckbox extends GuiComponent{
 
+	//Default styles
+	private static int defaultOutlineColor=0x0,defaultFillColor=0xffff0000,defaultOutlineStrength=0x2;
+	
 	//Position of the checkbox
 	public int x,y,width,height;
 	//Sets the box to checked
 	private boolean checked;
-	//Colors
-	private int outlineColor,fillColor;
+	//Styles
+	private int outlineColor,fillColor,outlineStrength;
 	//Callback listener
 	private CheckboxListener onchange;
 
 	public GuiCheckbox(float x,float y,float width,float height,boolean checked,CheckboxListener onchange){
-		this(x,y,width,height,checked,onchange,0,0xffff0000);
+		this(x,y,width,height,checked,onchange,defaultOutlineColor,defaultFillColor,defaultOutlineStrength);
 	}
 
-	public GuiCheckbox(float x,float y,float width,float height,boolean checked,CheckboxListener onchange,int outlineColor,int fillColor){
+	public GuiCheckbox(float x,float y,float width,float height,boolean checked,CheckboxListener onchange,int outlineColor,int fillColor,int outlineStrength){
 		this.x=(int)x;
 		this.y=(int)y;
 		this.width=(int)width;
@@ -31,8 +34,18 @@ public class GuiCheckbox extends GuiComponent{
 		this.onchange=onchange;
 		this.outlineColor=outlineColor;
 		this.fillColor=fillColor;
+		this.outlineStrength=outlineStrength;
 	}
 
+	/*
+	 * Sets the default styles for every checkbox
+	 * */
+	public static void setDefaults(int outlineColor,int fillColor,int outlineStrength) {
+		defaultFillColor=fillColor;
+		defaultOutlineColor=outlineColor;
+		defaultOutlineStrength=outlineStrength;
+	}
+	
 	@Override
 	public boolean handleMousePressed(PApplet app){
 
@@ -77,7 +90,6 @@ public class GuiCheckbox extends GuiComponent{
 
 			//Renders the checkmark if the box is checked
 			if(this.checked){
-				app.stroke(5);
 				app.stroke(this.fillColor);
 				app.line(this.x,this.y,this.x + this.width,this.y + this.height);
 				app.line(this.x,this.y + height,this.x + this.width,this.y);
@@ -86,7 +98,7 @@ public class GuiCheckbox extends GuiComponent{
 			//Renders the box
 			app.noFill();
 			app.stroke(this.outlineColor);
-			app.strokeWeight(2);
+			app.strokeWeight(this.outlineStrength);
 			app.rect(this.x,this.y,this.width,this.height);
 		});
 	}

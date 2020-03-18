@@ -8,11 +8,12 @@ Im using the [Eclipse IDE](https://www.eclipse.org/), so there is no version wit
   * Checkboxes
   * Sliders
   * Buttons
+  * Imagebuttons
 * Can handle multiple elements on top of each other without executing anything by a click or hover.
 
 
 # How to use
-To use it you have to put the files into your processing Project (The src files for Java or the .pde file for processing)
+To use it you have to put the files into your processing Project (either the source files or the .jar as a library include)
 
 First you need to create a GuiEngine object and parse the Papplet (Processing instance) to it.
 
@@ -24,7 +25,7 @@ void setup(){
 ```
 
 Now to add any element call the GuiEngine#addComp method and parse it any gui element.
-Some of the gui elements require async events. You can use Lambdas for that events.
+Some of the gui elements require async events. You can use Lambdas for this events.
 
 ```
 void setup(){
@@ -99,4 +100,11 @@ public void keyPressed(){
 public void keyReleased(){
 	this.engine.keyReleased();
 }
+```
+
+If you want to set default styles for any gui component call the static GuiComponent#setDefaults method on the class.
+Here is an example for the GuiButton
+
+```
+	GuiButton.setDefaults(0xffA00000,0xff717171,0xffFFFFFF,0xffF50000,0xffACACAC,0,0);
 ```
