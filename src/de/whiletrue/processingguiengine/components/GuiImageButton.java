@@ -11,6 +11,10 @@ import processing.core.PImage;
 
 public class GuiImageButton extends GuiComponent{
 
+	//Default styles
+	private static int defaultTextColor=0xffFFFFFF,defaultTextShadowColor=0xffACACAC,defaultHoverOffsetX=0x0,
+			defaultHoverOffsetY=-0xA;
+	
 	//Image to display
 	private PImage image;
 	//Position
@@ -23,7 +27,7 @@ public class GuiImageButton extends GuiComponent{
 	private String text;
 	
 	public GuiImageButton(PImage image,float x,float y,float width,float height,Function<Integer,String> onclick) {
-		this(image,x,y,width,height,onclick,0,-10,0xffFFFFFF,0xffACACAC);
+		this(image,x,y,width,height,onclick,defaultHoverOffsetX,defaultHoverOffsetY,defaultTextColor,defaultTextShadowColor);
 	}
 	
 	public GuiImageButton(PImage image,float x,float y,float width,float height,Function<Integer,String> onclick,
@@ -39,6 +43,16 @@ public class GuiImageButton extends GuiComponent{
 		this.hoverOffsetX=hoverOffsetX;
 		this.hoverOffsetY=hoverOffsetY;
 		this.text = onclick.apply(-1);
+	}
+	
+	/*
+	 * Sets the default styles for all image buttons
+	 * */
+	public static void setDefaults(int hoverOffsetX,int hoverOffsetY,int textColor,int textShadowColor) {
+		defaultHoverOffsetX=hoverOffsetX;
+		defaultHoverOffsetY=hoverOffsetY;
+		defaultTextColor=textColor;
+		defaultTextShadowColor=textShadowColor;
 	}
 
 	@Override

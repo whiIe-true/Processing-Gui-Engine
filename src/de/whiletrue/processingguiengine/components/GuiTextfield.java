@@ -344,4 +344,9 @@ public class GuiTextfield extends GuiComponent{
 		this.outlineStrength=outlineStrength;
 		return this;
 	}
+
+	//Return the text
+	public final String getText(){
+		return this.text.toString();
+	}
 }

@@ -26,6 +26,13 @@ public class GuiEngine {
 	}
 	
 	/*
+	 * Removes a gui component
+	 * */
+	public void removeComp(GuiComponent comp) {
+		this.loadedComponents.remove(comp);
+	}
+	
+	/*
 	 * Should be called whenever the screen updates and gets rendered
 	 * */
 	public void draw() {
