@@ -33,16 +33,16 @@ public class GuiTextfield extends GuiComponent{
 	//Styles
 	private int textColor,fillColor,outlineColor,presetColor,outlineStrength,cornerStrength;
 
-	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String text){
+	public GuiTextfield(float x,float y,float width,float height,TypeListener ontype,String text){
 		this(x,y,width,height,ontype,text,defaultPreset,defaultTextColor,defaultFillColor,defaultOutlineColor,
 				defaultPresetColor,defaultOutlineStrength,defaultCornerStrength);
 	}
 
-	public GuiTextfield(int x,int y,int width,int height,TypeListener ontype,String text,String presetText,int textColor,int fillColor,int outlineColor,int presetColor,int outlineStrength,int cornerStrength){
-		this.x=x;
-		this.y=y;
-		this.width=width;
-		this.height=height;
+	public GuiTextfield(float x,float y,float width,float height,TypeListener ontype,String text,String presetText,int textColor,int fillColor,int outlineColor,int presetColor,int outlineStrength,int cornerStrength){
+		this.x=(int)x;
+		this.y=(int)y;
+		this.width=(int)width;
+		this.height=(int)height;
 		this.ontype=ontype;
 		this.text=new StringBuffer(text == null?"":text);
 		this.textColor=textColor;

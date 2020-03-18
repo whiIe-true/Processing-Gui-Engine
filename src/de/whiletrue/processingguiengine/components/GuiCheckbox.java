@@ -18,15 +18,15 @@ public class GuiCheckbox extends GuiComponent{
 	//Callback listener
 	private CheckboxListener onchange;
 
-	public GuiCheckbox(int x,int y,int width,int height,boolean checked,CheckboxListener onchange){
+	public GuiCheckbox(float x,float y,float width,float height,boolean checked,CheckboxListener onchange){
 		this(x,y,width,height,checked,onchange,0,0xffff0000);
 	}
 
-	public GuiCheckbox(int x,int y,int width,int height,boolean checked,CheckboxListener onchange,int outlineColor,int fillColor){
-		this.x=x;
-		this.y=y;
-		this.width=width;
-		this.height=height;
+	public GuiCheckbox(float x,float y,float width,float height,boolean checked,CheckboxListener onchange,int outlineColor,int fillColor){
+		this.x=(int)x;
+		this.y=(int)y;
+		this.width=(int)width;
+		this.height=(int)height;
 		this.checked=checked;
 		this.onchange=onchange;
 		this.outlineColor=outlineColor;

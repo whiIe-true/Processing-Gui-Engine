@@ -9,6 +9,10 @@ import processing.core.PApplet;
 
 public class GuiSlider extends GuiComponent{
 
+	//Default style values
+	private static int defaultFilledColor=0xfff00000,defaultEmptyColor=0xff717171,defaultOutlineColor=0,
+			defaultTextColor=255,defaultOutlineStrength=5;
+	
 	//Position of the slider
 	private int x,y,width,height;
 	//Min an max values of the slider
@@ -24,16 +28,16 @@ public class GuiSlider extends GuiComponent{
 	//The current display value
 	private String text;
 	
-	public GuiSlider(int x,int y,int width,int height,int minValue,int maxValue,int currentValue,ChangeListener onchange,String defaultText) {
-		this(x,y,width,height,minValue,maxValue,currentValue,onchange,defaultText,0xfff00000,0xff717171,0,255,5);
+	public GuiSlider(float x,float y,float width,float height,int minValue,int maxValue,int currentValue,ChangeListener onchange,String defaultText) {
+		this(x,y,width,height,minValue,maxValue,currentValue,onchange,defaultText,defaultFilledColor,defaultEmptyColor,defaultOutlineColor,defaultTextColor,defaultOutlineStrength);
 	}
 	
-	public GuiSlider(int x,int y,int width,int height,int minValue,int maxValue,int currentValue,ChangeListener onchange,String defaultText,
+	public GuiSlider(float x,float y,float width,float height,int minValue,int maxValue,int currentValue,ChangeListener onchange,String defaultText,
 			int filledColor,int emptyColor,int outlineColor,int textColor,int outlineStrength) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.x = (int)x;
+		this.y = (int)y;
+		this.width = (int)width;
+		this.height = (int)height;
 		this.min = minValue;
 		this.max = maxValue;
 		this.onchange = onchange;
@@ -44,6 +48,18 @@ public class GuiSlider extends GuiComponent{
 		this.outlineColor=outlineColor;
 		this.textColor=textColor;
 		this.outlineStrength=outlineStrength;
+	}
+	
+	/*
+	 * Sets the default style values for every new class instance
+	 */
+	public static void setDefaults(int filledColor,int emptyColor,int outlineColor,
+			int textColor,int outlineStrength) {
+		defaultFilledColor=filledColor;
+		defaultEmptyColor=emptyColor;
+		defaultOutlineColor=outlineColor;
+		defaultTextColor=textColor;
+		defaultOutlineStrength=outlineStrength;
 	}
 	
 	@Override
@@ -80,7 +96,7 @@ public class GuiSlider extends GuiComponent{
 		//Gets if the slider is hovered by the users mouse
 		boolean hovered = this.isHovered(mx, my);
 		
-		//Checks if the slider gets slided;
+		//Checks if the slider gets slider
 		change:if(this.dragged) {
 		
 			//Calculates the new state of the slider

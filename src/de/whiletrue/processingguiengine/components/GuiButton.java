@@ -30,16 +30,16 @@ public class GuiButton extends GuiComponent{
 	//Text on the button
 	private String text;
 
-	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick){
+	public GuiButton(float x,float y,float width,float height,Function<Integer,String> onclick){
 		this(x,y,width,height,onclick,defaultBgColor,defaultHoverColor,defaultClickColor,defaultTextColor,
 				defaultTextShadowColor,defaultOutlineColor,defaultOutlineStrength,defaultCornerStrength);
 	}
 
-	public GuiButton(int x,int y,int width,int height,Function<Integer,String> onclick,int background,int hoverColor,int clickColor,int textColor,int textShadowColor,int outlineColor,float outlineStrength,int cornerStrength){
-		this.x=x;
-		this.y=y;
-		this.width=width;
-		this.height=height;
+	public GuiButton(float x,float y,float width,float height,Function<Integer,String> onclick,int background,int hoverColor,int clickColor,int textColor,int textShadowColor,int outlineColor,float outlineStrength,int cornerStrength){
+		this.x=(int)x;
+		this.y=(int)y;
+		this.width=(int)width;
+		this.height=(int)height;
 		this.onclick=onclick;
 		this.cornerStrength=cornerStrength;
 		this.defaultColor=background;

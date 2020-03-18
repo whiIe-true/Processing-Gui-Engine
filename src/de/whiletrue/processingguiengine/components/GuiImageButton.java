@@ -22,17 +22,17 @@ public class GuiImageButton extends GuiComponent{
 	//Text on the button
 	private String text;
 	
-	public GuiImageButton(PImage image,int x,int y,int width,int height,Function<Integer,String> onclick) {
+	public GuiImageButton(PImage image,float x,float y,float width,float height,Function<Integer,String> onclick) {
 		this(image,x,y,width,height,onclick,0,-10,0xffFFFFFF,0xffACACAC);
 	}
 	
-	public GuiImageButton(PImage image,int x,int y,int width,int height,Function<Integer,String> onclick,
+	public GuiImageButton(PImage image,float x,float y,float width,float height,Function<Integer,String> onclick,
 			int hoverOffsetX,int hoverOffsetY,int textColor,int textShadowColor) {
-		this.x = x;
-		this.y = y;
+		this.x = (int)x;
+		this.y = (int)y;
+		this.width = (int)width;
+		this.height = (int)height;
 		this.image=image;
-		this.width = width;
-		this.height = height;
 		this.onclick = onclick;
 		this.textColor=textColor;
 		this.textShadowColor=textShadowColor;

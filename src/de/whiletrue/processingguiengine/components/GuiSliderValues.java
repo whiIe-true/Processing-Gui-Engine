@@ -7,7 +7,7 @@ public class GuiSliderValues extends GuiSlider{
 	//The new change listener
 	private ChangeValueListener changeListener;
 
-	public GuiSliderValues(int x,int y,int width,int height,String sliderValues[],int currentIndex,ChangeValueListener onChange,String defaultText){
+	public GuiSliderValues(float x,float y,float width,float height,String sliderValues[],int currentIndex,ChangeValueListener onChange,String defaultText){
 		super(x,y,width,height,0,sliderValues.length-1,currentIndex,null,defaultText);
 		this.sliderValues=sliderValues;
 		this.changeListener=onChange;
