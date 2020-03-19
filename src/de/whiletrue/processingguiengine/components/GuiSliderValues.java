@@ -1,13 +1,13 @@
 package de.whiletrue.processingguiengine.components;
 
-public class GuiSliderValues extends GuiSlider{
+public class GuiSliderValues<T> extends GuiSlider{
 
 	//All slider values
-	private String sliderValues[];
+	private T sliderValues[];
 	//The new change listener
-	private ChangeValueListener changeListener;
+	private ChangeValueListener<T> changeListener;
 
-	public GuiSliderValues(float x,float y,float width,float height,String sliderValues[],int currentIndex,ChangeValueListener onChange,String defaultText){
+	public GuiSliderValues(float x,float y,float width,float height,T sliderValues[],int currentIndex,ChangeValueListener<T> onChange,String defaultText){
 		super(x,y,width,height,0,sliderValues.length-1,currentIndex,null,defaultText);
 		this.sliderValues=sliderValues;
 		this.changeListener=onChange;
@@ -54,11 +54,11 @@ public class GuiSliderValues extends GuiSlider{
 
 	//Listener that does the same as the change listener but with other values
 	@FunctionalInterface
-	public interface ChangeValueListener{
+	public interface ChangeValueListener<T>{
 		/**
 		 * @param index the index of the value in the given string array
 		 * @param value the actual value
 		 */
-		public String execute(int index,String value);
+		public String execute(int index,T value);
 	}
 }
