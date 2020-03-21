@@ -44,8 +44,16 @@ public class GuiEngine {
 		
 		//Iterates over all components
 		for(int i = this.loadedComponents.size()-1; i >= 0; i--) {
+			//Gets the component
+			GuiComponent comp = this.loadedComponents.get(i);
+
+			//Checks if the component is hidden
+			if(comp.isHidden())
+				continue;
+			
 			//Gets the rendering object and if they activly used the mouse position
-			Entry<Boolean,RenderObject> entry = this.loadedComponents.get(i).handleRender(this.app, used);
+			Entry<Boolean,RenderObject> entry = comp.handleRender(this.app, used);
+
 			
 			//Sets the used variable
 			used |= entry.getKey();
@@ -54,8 +62,12 @@ public class GuiEngine {
 			renderObjects[i] = entry.getValue();
 		}
 		
-		//Iterates over all render object to render them
-		Arrays.stream(renderObjects).forEach(i->i.execute());
+		//Iterates over all render object
+		Arrays.stream(renderObjects)
+		//Checks if the button is given
+		.filter(i->i!=null)
+		//Renders it
+		.forEach(i->i.execute());
 	}
 	
 	/*
@@ -63,14 +75,22 @@ public class GuiEngine {
 	 * */
 	public void mousePressed() {
 		//Component on that the event got used
-		AtomicReference<GuiComponent>comp=new AtomicReference<>();
+		AtomicReference<GuiComponent>finalComp=new AtomicReference<>();
+		
 		
 		//Iterates over all components
 		for(int i = this.loadedComponents.size()-1; i >= 0; i--) {
+			//Gets the component
+			GuiComponent comp = this.loadedComponents.get(i);
+
+			//Checks if the component is hidden
+			if(comp.isHidden())
+				continue;
+			
 			//Executes the event and checks if if used the mouse
-			if(this.loadedComponents.get(i).handleMousePressed(this.app)) {
+			if(comp.handleMousePressed(this.app)) {
 				//Sets the component
-				comp.set(this.loadedComponents.get(i));
+				finalComp.set(comp);
 				//Exits the loop
 				break;
 			}
@@ -78,7 +98,7 @@ public class GuiEngine {
 		
 		//Executes the after events on all components
 		this.loadedComponents.stream()
-		.filter(i->i!=comp.get())
+		.filter(i->i!=finalComp.get())
 		.forEach(i->i.handleAfterMousePressed(this.app));
 	}
 	
@@ -88,8 +108,15 @@ public class GuiEngine {
 	public void mouseReleased() {
 		//Iterates over all components
 		for(int i = this.loadedComponents.size()-1; i >= 0; i--) {
+			//Gets the component
+			GuiComponent comp = this.loadedComponents.get(i);
+
+			//Checks if the component is hidden
+			if(comp.isHidden())
+				continue;
+			
 			//Executes the event and checks if if used the mouse
-			if(this.loadedComponents.get(i).handleMouseReleased(this.app))
+			if(comp.handleMouseReleased(this.app))
 				//Exits the loop
 				break;
 		}
@@ -101,8 +128,15 @@ public class GuiEngine {
 	public void keyPressed() {
 		//Iterates over all components
 		for(int i = this.loadedComponents.size()-1; i >= 0; i--) {
+			//Gets the component
+			GuiComponent comp = this.loadedComponents.get(i);
+
+			//Checks if the component is hidden
+			if(comp.isHidden())
+				continue;
+			
 			//Executes the event and checks if if used the mouse
-			if(this.loadedComponents.get(i).handleKeyPressed(this.app))
+			if(comp.handleKeyPressed(this.app))
 				//Exits the loop
 				break;
 		}
@@ -114,8 +148,15 @@ public class GuiEngine {
 	public void keyReleased() {
 		//Iterates over all components
 		for(int i = this.loadedComponents.size()-1; i >= 0; i--) {
+			//Gets the component
+			GuiComponent comp = this.loadedComponents.get(i);
+
+			//Checks if the component is hidden
+			if(comp.isHidden())
+				continue;
+			
 			//Executes the event and checks if if used the mouse
-			if(this.loadedComponents.get(i).handleKeyReleased(this.app))
+			if(comp.handleKeyReleased(this.app))
 				//Exits the loop
 				break;
 		}
