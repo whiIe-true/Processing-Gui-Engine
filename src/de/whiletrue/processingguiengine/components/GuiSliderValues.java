@@ -1,64 +1,54 @@
 package de.whiletrue.processingguiengine.components;
 
-public class GuiSliderValues<T> extends GuiSlider{
+import processing.core.PFont;
 
-	//All slider values
-	private T sliderValues[];
-	//The new change listener
-	private ChangeValueListener<T> changeListener;
+public class GuiSliderValues<T>extends GuiSlider{
 
-	public GuiSliderValues(float x,float y,float width,float height,T sliderValues[],int currentIndex,ChangeValueListener<T> onChange,String defaultText){
-		super(x,y,width,height,0,sliderValues.length-1,currentIndex,null,defaultText);
-		this.sliderValues=sliderValues;
-		this.changeListener=onChange;
-		//Updates the change listener
-		this.setChangeListener(this::handleChange);
+	private T[] values;
+
+	public GuiSliderValues(float x,float y,float width,float height,T[] values,int index,ValueSliderChangeEvent<T> onChange){
+		super(x,y,width,height,0,values.length - 1,index,(perc,val)->onChange.execute(val,values[val]));
+		this.values=values;
 	}
 
-	/*
-	 * Handles all change events for the slider
-	 * */
-	public String handleChange(double percent,int value){
-		//Executes the new change listener
-		return this.changeListener.execute(value,this.sliderValues[value]);
+	public GuiSliderValues(float x,float y,float width,float height,T[] values,int index,ValueSliderChangeEvent<T> onChange,
+			int fillColor,int emptyColor,int outlineColor,int textColor,int outlineStrength,PFont font){
+		super(x,y,width,height,0,values.length - 1,index,(perc,val)->onChange.execute(val,values[val]),fillColor,
+				emptyColor,outlineColor,textColor,outlineStrength,font);
+		this.values=values;
 	}
 
-	/*
-	 * Sets the state to the value with the given string
-	 * */
-	public void setStateByValue(String value) {
-		//Gets the index of the value
-		int index = this.getIndex(value);
-		
-		//Checks if the index got found
-		if(index == -1)
-			return;
-		
-		//Sets the slider
-		this.setState(index);
+	/**
+	 * Sets the slider state to the given value
+	 * 
+	 * @param value the value
+	 */
+	public void setStateByValue(T value){
+		//Iterates over every value
+		for(int i=0; i < this.values.length; i++)
+			//Checks if the values if equal
+			if(value.equals(this.values[i])){
+				//Sets the state
+				this.setState(i);
+				break;
+			}
+	}
+	
+	public GuiSliderValues<T> setValueChangeEvent(ValueSliderChangeEvent<T> onChange){
+		this.setChangeEvent((perc,val)->onChange.execute(val,values[val]));
+		return this;
 	}
 	
 	/*
-	 * Returns the index of the given value on the slider
+	 * Returns the current selected value
 	 */
-	public int getIndex(String value){
-		//Iterates over all slider values
-		for(int i=0; i < this.sliderValues.length; i++)
-			//Checks if the current value is equal to the searched value
-			if(this.sliderValues[i].equals(value))
-				//Returns that index
-				return i;
-		//Returns error -1
-		return -1;
+	public T getValue(){
+		return this.values[this.getState()];
 	}
 
-	//Listener that does the same as the change listener but with other values
 	@FunctionalInterface
-	public interface ChangeValueListener<T>{
-		/**
-		 * @param index the index of the value in the given string array
-		 * @param value the actual value
-		 */
+	public static interface ValueSliderChangeEvent<T>{
 		public String execute(int index,T value);
 	}
+
 }

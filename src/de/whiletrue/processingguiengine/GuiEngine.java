@@ -19,8 +19,37 @@ public class GuiEngine {
 	}
 	
 	/*
+	 * Removes a GUI-component
+	 * */
+	public void removeComponent(GuiComponent component) {
+		this.loadedComponents.remove(component);
+	}
+	
+	/*
+	 * Adds a GUI-component
+	 * */
+	public void addComponent(GuiComponent component) {
+		this.loadedComponents.add(component);
+	}
+	
+	/*
+	 * Gets the requested component
+	 * */
+	public GuiComponent getComponent(int index) {
+		return this.loadedComponents.get(index);
+	}
+	
+	/*
+	 * Clears all components
+	 * */
+	public void clearComponents() {
+		this.loadedComponents.clear();
+	}
+	
+	/*
 	 * Adds a gui component
 	 * */
+	@Deprecated
 	public void addComp(GuiComponent comp) {
 		this.loadedComponents.add(comp);
 	}
@@ -28,6 +57,7 @@ public class GuiEngine {
 	/*
 	 * Removes a gui component
 	 * */
+	@Deprecated
 	public void removeComp(GuiComponent comp) {
 		this.loadedComponents.remove(comp);
 	}

@@ -2,91 +2,66 @@ package de.whiletrue.processingguiengine.components;
 
 import java.util.AbstractMap;
 import java.util.Map.Entry;
-import java.util.function.Function;
 
-import de.whiletrue.processingguiengine.GuiComponent;
 import de.whiletrue.processingguiengine.RenderObject;
+import de.whiletrue.processingguiengine.components.GuiButton.ButtonClickEvent;
+import de.whiletrue.processingguiengine.components.defaults.SizeComponent;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
 
-public class GuiImageButton extends GuiComponent{
+public class GuiImageButton extends SizeComponent{
 
-	//Default styles
-	private static int defaultTextColor=0xffFFFFFF,defaultTextShadowColor=0xffACACAC,defaultHoverOffsetX=0x0,
-			defaultHoverOffsetY=-0xA;
-	
+	//Default values
+	private static int DEF_textColor=0xFFFFFF,DEF_textShadowColor=0xACACAC,DEF_hoverOffsetX=0x0,DEF_hoverOffsetY=-0xA;
+	private static PFont DEF_font=new PFont(PFont.findFont("Arial"),true);
+
 	//Image to display
 	private PImage image;
-	//Position
-	private int x,y,width,height,
-	//Styles
-	textColor,textShadowColor,hoverOffsetX,hoverOffsetY;
+
 	//Events
-	private Function<Integer, String> onclick;
-	//Text on the button
+	private ButtonClickEvent onClick;
+
+	//Text beneath the button
 	private String text;
-	
-	public GuiImageButton(PImage image,float x,float y,float width,float height,Function<Integer,String> onclick) {
-		this(image,x,y,width,height,onclick,defaultHoverOffsetX,defaultHoverOffsetY,defaultTextColor,defaultTextShadowColor);
+
+	//Styles
+	private int textColor,textShadowColor,hoverOffsetX,hoverOffsetY;
+	private PFont font;
+
+	public GuiImageButton(PImage image,float x,float y,float width,float height,ButtonClickEvent onClick){
+		this(image,x,y,width,height,onClick,DEF_textColor,DEF_textShadowColor,DEF_hoverOffsetX,DEF_hoverOffsetY,DEF_font);
 	}
-	
-	public GuiImageButton(PImage image,float x,float y,float width,float height,Function<Integer,String> onclick,
-			int hoverOffsetX,int hoverOffsetY,int textColor,int textShadowColor) {
-		this.x = (int)x;
-		this.y = (int)y;
-		this.width = (int)width;
-		this.height = (int)height;
+
+	public GuiImageButton(PImage image,float x,float y,float width,float height,ButtonClickEvent onClick,
+			int textColor,int textShadowColor,int hoverOffsetX,int hoverOffsetY,PFont font){
+		super(x,y,width,height);
 		this.image=image;
-		this.onclick = onclick;
+		this.onClick=onClick;
 		this.textColor=textColor;
 		this.textShadowColor=textShadowColor;
 		this.hoverOffsetX=hoverOffsetX;
 		this.hoverOffsetY=hoverOffsetY;
-		this.text = onclick.apply(-1);
-	}
-	
-	/*
-	 * Sets the default styles for all image buttons
-	 * */
-	public static void setDefaults(int hoverOffsetX,int hoverOffsetY,int textColor,int textShadowColor) {
-		defaultHoverOffsetX=hoverOffsetX;
-		defaultHoverOffsetY=hoverOffsetY;
-		defaultTextColor=textColor;
-		defaultTextShadowColor=textShadowColor;
-	}
-
-	@Override
-	public boolean handleMousePressed(PApplet app) {
-		//Checks if the button gots clicked
-		if(this.isHovered(app.mouseX, app.mouseY)) {
-			//Handles the onclick
-			this.text = this.onclick.apply(app.mouseButton);
-			return true;
-		}
+		this.font=font;
 		
-		return false;
+		//Sets the text
+		this.text=onClick.execute(-1);
+	}
+
+	/*
+	 * Sets the defaults
+	 * */
+	public static void setDefaults(int textColor,int textShadowColor,int hoverOffsetX,int hoverOffsetY,PFont font) {
+		DEF_hoverOffsetX=hoverOffsetX;
+		DEF_hoverOffsetY=hoverOffsetY;
+		DEF_textColor=textColor;
+		DEF_textShadowColor=textShadowColor;
+		if(font!=null)
+			DEF_font=font;
 	}
 
 	@Override
-	public void handleAfterMousePressed(PApplet app){}
-	
-	@Override
-	public boolean handleMouseReleased(PApplet app) {
-		return false;
-	}
-
-	@Override
-	public boolean handleKeyPressed(PApplet app) {
-		return false;
-	}
-
-	@Override
-	public boolean handleKeyReleased(PApplet app) {
-		return false;
-	}
-
-	@Override
-	public Entry<Boolean, RenderObject> handleRender(PApplet app, boolean usedBefore) {
+	public Entry<Boolean,RenderObject> handleRender(PApplet app,boolean usedBefore){
 		//Gets if the button is hovered
 		boolean hover = this.isHovered(app.mouseX, app.mouseY);
 		
@@ -97,91 +72,76 @@ public class GuiImageButton extends GuiComponent{
 		//Returns a new entry with the new used boolean and the render object
 		return new AbstractMap.SimpleEntry<Boolean,RenderObject>(hover, ()->{
 			
+			//Gets the coordinates
+			float[] coords = this.getRealCoordinates();
+			
 			//Renders the image
 			app.imageMode(PApplet.CORNER);
-			app.image(this.image,this.x+offX,this.y+offY,this.width,this.height);
+			app.tint(0xff,255*this.getOpacity());
+			app.image(this.image,coords[0]+offX,coords[1]+offY,coords[2],coords[3]);
 			
 			//Checks if text should be rendered
-			if(this.text!=null) {				
+			if(this.text!=null) {	
+				app.textFont(this.font);
 				//Renders the text
-				app.textSize(this.width*.3f);
+				app.textSize(coords[2]*.3f);
 				app.textAlign(PApplet.CENTER,PApplet.TOP);
 				//Checks if the text should be rendered as a shadow
 				if(this.textShadowColor!=-1) {
-					app.fill(this.textShadowColor);
-					app.text(this.text, this.x+this.width/2-2, this.y+this.height+4);
+					app.fill(this.applyOpacity(this.textShadowColor));
+					app.text(this.text, coords[0]+coords[2]/2-2, coords[1]+coords[3]+4);
 				}
-				app.fill(this.textColor);
-				app.text(this.text, this.x+this.width/2, this.y+this.height+2);
+				app.fill(this.applyOpacity(this.textColor));
+				app.text(this.text, coords[0]+coords[2]/2, coords[1]+coords[3]+2);
 			}
 		});
 	}
 
-	/*
-	 * Returns if the button gets hovered
-	 * */
-	private boolean isHovered(int mouseX,int mouseY) {
-		return mouseX > this.x &&
-				mouseX < this.x+this.width &&
-				mouseY > this.y &&
-				mouseY < this.y+this.height;
+	@Override
+	public boolean handleMousePressed(PApplet app){
+		//Checks if the button got clicked
+		if(this.isHovered(app.mouseX, app.mouseY)) {
+			//Handles the onclick
+			this.text = this.onClick.execute(app.mouseButton);
+			return true;
+		}
+		return false;
 	}
 
-	//Return the x
-	public final int getX(){
-		return this.x;
+	@Override
+	public boolean handleMouseReleased(PApplet app){
+		return false;
 	}
 
-	//Return the y
-	public final int getY(){
-		return this.y;
+	@Override
+	public void handleAfterMousePressed(PApplet app){
 	}
 
-	//Return the width
-	public final int getWidth(){
-		return this.width;
+	@Override
+	public boolean handleKeyPressed(PApplet app){
+		return false;
 	}
 
-	//Return the textColor
-	public final int getTextColor(){
-		return this.textColor;
+	@Override
+	public boolean handleKeyReleased(PApplet app){
+		return false;
 	}
 
-	//Return the textShadowColor
-	public final int getTextShadowColor(){
-		return this.textShadowColor;
-	}
-
-	//Return the hoverOffsetX
-	public final int getHoverOffsetX(){
-		return this.hoverOffsetX;
-	}
-
-	//Return the hoverOffsetY
-	public final int getHoverOffsetY(){
-		return this.hoverOffsetY;
-	}
-
-	//Return the text
-	public final String getText(){
-		return this.text;
-	}
-
-	//Sets x
-	public final GuiImageButton setX(int x){
-		this.x=x;
+	//Sets image
+	public final GuiImageButton setImage(PImage image){
+		this.image=image;
 		return this;
 	}
 
-	//Sets y
-	public final GuiImageButton setY(int y){
-		this.y=y;
+	//Sets onClick
+	public final GuiImageButton setClickEvent(ButtonClickEvent onClick){
+		this.onClick=onClick;
 		return this;
 	}
 
-	//Sets width
-	public final GuiImageButton setWidth(int width){
-		this.width=width;
+	//Sets text
+	public final GuiImageButton setText(String text){
+		this.text=text;
 		return this;
 	}
 
@@ -208,11 +168,11 @@ public class GuiImageButton extends GuiComponent{
 		this.hoverOffsetY=hoverOffsetY;
 		return this;
 	}
-
-	//Sets text
-	public final GuiImageButton setText(String text){
-		this.text=text;
+	
+	//Sets font
+	public final GuiImageButton setFont(PFont font){
+		this.font=font;
 		return this;
 	}
-	
+
 }
